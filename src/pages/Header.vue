@@ -28,6 +28,13 @@
               <q-btn icon="style" flat to="/login">Вход</q-btn>
             </q-item>
             <q-separator />
+            <q-item clickable v-close-popup>
+              <q-btn icon="style" flat to="/about">О нас</q-btn>
+            </q-item>
+            <q-item clickable v-close-popup>
+              <q-btn icon="print" flat to="/contact">Контакты</q-btn>
+            </q-item>
+            <q-separator />
            <div v-if="loginCheck">
             <q-item clickable v-close-popup>
               <q-btn icon="eco" flat to="/city/astana">Астана</q-btn>
@@ -46,21 +53,6 @@
           <!-- <q-btn color="black">{{ currentCity }}</q-btn> -->
         </q-toolbar>
       </q-header>
-  <!-- <q-drawer
-        v-model="drawer"
-        :width="[$q.screen.width < 700 ? '500' : '300']"
-        :breakpoint="500"
-        overlay
-        bordered
-        class="menu"
-      >
-      <q-scroll-area class="fit">
-      <q-list>
-        <q-btn flat round outline @click="closeDrawer" class="closeBtn" label="X"/>
-        <Drawer />
-      </q-list>
-    </q-scroll-area>
-      </q-drawer> -->
     </q-layout>
   </div>
 </template>

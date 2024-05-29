@@ -3,7 +3,7 @@
     <div>
       <div class="bg slide3"></div>
     <h1>Лучшие эксперты</h1>
-    <q-btn rounded flat class="btn" label="Контакты"/>
+    <q-btn rounded flat class="btn" to="/contact" label="Контакты"/>
     </div>
   </template>
   

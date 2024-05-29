@@ -3,7 +3,7 @@
     <div>
       <div class="bg slide2"></div>
     <h1>Насыщенная природа</h1>
-    <q-btn to="/" flat rounded class="btn" label="О нас"/>
+    <q-btn to="/about" flat rounded class="btn" label="О нас"/>
 
     </div>
   </template>

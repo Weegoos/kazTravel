@@ -16,6 +16,14 @@ const routes = [
     component: () => import('src/pages/BackendTest.vue'),
   },
   {
+    path: '/about',
+    component: () => import('src/pages/AboutUs.vue'),
+  },
+  {
+    path: '/contact',
+    component: () => import('src/pages/ContactUs.vue'),
+  },
+  {
     path: '/city',
     children: [
       {
