@@ -9,8 +9,8 @@ const app = express();
 const emailRouter = require('./email')
 
 app.use(cors()); 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); 
+app.use(express.json());
 
 const pool = mysql.createPool({
     host: 'localhost',
@@ -86,6 +86,8 @@ app.get('/test', (req, res) => {
         res.json(results);
     });
 });
+
+app.use(emailRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

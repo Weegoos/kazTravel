@@ -3,12 +3,13 @@
     <div>
       <div class="collaborationInfo col q-ml-md">
         <div class="wrapperCollaborationInfo relative-position" style="max-width: 75%;">
-          <form action="/send-email">
-            <q-input v-model="email" class="q-pt-md" label="Почта" />
-            <q-input v-model="phone" class="q-pt-md" label="Номер телефона" />
-            <q-select v-model="collab" class="q-py-md" :options="options" label="Тип сотрудничества" />
-            <q-btn type="submit" class="bg-black" color="white" label="Отправить сообщение"/>
-          </form>
+          <form action="/#/contact" method="POST">
+    <q-input v-model="email" name="email" class="q-pt-md" label="Почта" />
+    <q-input v-model="phone" name="phone" class="q-pt-md" label="Номер телефона" />
+    <q-select v-model="collab" name="collab" class="q-py-md" :options="options" label="Тип сотрудничества" />
+    <q-btn type="submit" class="bg-black" color="white" label="Отправить сообщение" />
+</form>
+
         </div>
       </div>
     </div>
