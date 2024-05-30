@@ -8,76 +8,105 @@
     </div>
     <q-separator />
     <div class="chat">
-      <q-chat-message
+      <p v-if="isText">Пока нет сообщений...</p>
+      <div v-if="isTextVisible">
+        <q-chat-message
         label="Today"
       />
-      <q-chat-message
-        name="me"
-        avatar="https://cdn.quasar.dev/img/avatar4.jpg"
-        :text="['Hi, how r you?']"
-        sent
-        stamp="7 minutes ago"
+      <q-chat-message v-for="msg in message" :key="msg.id" 
+        :name="msg.name"
+        :avatar="msg.avatar"
+        :text="[msg.text]"
+        :sent="msg.sent"
       />
-      <q-chat-message
-        name="Jane"
-        avatar="https://cdn.quasar.dev/img/avatar3.jpg"
-        :text="['doing fine, how r you?']"
-        stamp="4 minutes ago"
-      />
+      </div>
     </div>
     <q-separator />
     <div class="inputBot">
-      <q-input v-model="messages" outlined bottom-slots label="Label" >
-        <q-menu>
-          <q-list style="min-width: 100px">
-            <q-item clickable v-close-popup>
-              <q-item-section>/start</q-item-section>
-            </q-item>
-            <q-item clickable v-close-popup>
-              <q-item-section>/getStatus</q-item-section>
-            </q-item>
-            <q-separator />
-            <q-item clickable v-close-popup>
-              <q-item-section>Recent tabs</q-item-section>
-            </q-item>
-            <q-item clickable v-close-popup>
-              <q-item-section>History</q-item-section>
-            </q-item>
-            <q-item clickable v-close-popup>
-              <q-item-section>Downloads</q-item-section>
-            </q-item>
-            <q-separator />
-            <q-item clickable v-close-popup>
-              <q-item-section>Settings</q-item-section>
-            </q-item>
-            <q-separator />
-            <q-item clickable v-close-popup>
-              <q-item-section>Help &amp; Feedback</q-item-section>
-            </q-item>
-          </q-list>
-        </q-menu>
+      <q-select filled round bottom-slots v-model="UserMsg" :options="options" label="Label" :dense="dense" :options-dense="denseOpts">
         <template v-slot:append>
+          <q-icon v-if="model !== ''" name="close" @click.stop.prevent="model = ''" class="cursor-pointer" />
+        </template>
+        <template v-slot:after>
           <q-btn @click="sendMsg" round dense flat icon="send" />
         </template>
-      </q-input>
+      </q-select>
     </div>
   </div>
 </template>
 
 <script>
+  import { ref } from 'vue'
+  import botAnswerJson from '../botAnswer.json';
+  console.log(botAnswerJson[0].registration.benefit);
 export default {
-  // data() {
-  //   return {
-  //     messages: '',
-  //     userText: 'Batyr',
-  //   };
-  // },
-  // methods: {
-  //   sendMsg() {
-  //     this.text = this.message;
-  //   }
-  // }
-};
+  data() {
+    return {
+      model: ref(null),
+      options: [
+        '/start', 'Для чего нужно регистрироваться?'
+      ],
+      message: [],
+      UserMsg: '',
+      dense: ref(false),
+      denseOpts: ref(false),
+      counterForUserMsg: 0,
+      isText: true,
+      isTextVisible: false,
+    }
+  },
+  methods: {
+    sendMsg: function () {
+      for (let index = 0; index < 1; index++) {
+        this.counterForUserMsg++;
+      }
+      this.message.push({
+        id: this.counterForUserMsg,
+        text: this.UserMsg,
+        sent: true,
+        name: "Me",
+        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcyI9Cvp53aaP9XeRn-ZKbJDH2QaWC72O26A&s'
+      })
+
+      this.isText = false
+      this.isTextVisible = true
+      this.botAnswer()
+    },
+
+    botAnswer: function (){
+      let userCheck = sessionStorage.getItem('user')
+      for (let index = 0; index < 1; index++) {
+          this.counterForUserMsg++;
+        }
+      if (this.UserMsg === botAnswerJson[0].introduction.start){
+        userCheck != null ? this.message.push({
+          id: this.counterForUserMsg,
+          text: botAnswerJson[0].introduction.startCorrectAnswer,
+          sent: false,
+          name: "Chat Bot",
+          avatar: 'https://imgv3.fotor.com/images/blog-cover-image/10-profile-picture-ideas-to-make-you-stand-out.jpg'
+        }) : 
+        this.message.push({
+          id: this.counterForUserMsg,
+          text: botAnswerJson[0].introduction.startLoginAnswer,
+          sent: false,
+          name: "Chat Bot",
+          avatar: 'https://imgv3.fotor.com/images/blog-cover-image/10-profile-picture-ideas-to-make-you-stand-out.jpg'
+        })
+      }
+
+      if (this.UserMsg === botAnswerJson[0].registration.benefit){
+        this.message.push({
+          id: this.counterForUserMsg,
+          text: botAnswerJson[0].registration.benefitAnwer,
+          sent: false,
+          name: "Chat Bot",
+          avatar: 'https://imgv3.fotor.com/images/blog-cover-image/10-profile-picture-ideas-to-make-you-stand-out.jpg'
+        })
+      }
+    }
+  }
+}
 </script>
 
 <style>
@@ -88,11 +117,16 @@ export default {
   margin-bottom: 75px;
   box-sizing: border-box;
   border: solid #000 1px;
-  border-radius: 15px;
+  /* border-radius: 15px; */
 }
 
 .chat {
-  height: 70%;
+  height: 79%;
+  overflow-y: scroll
+}
+
+.botBody{
+  overflow-y: scroll;
 }
 
 .headerBot {
