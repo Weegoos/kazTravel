@@ -23,7 +23,7 @@
     </div>
     <q-separator />
     <div class="inputBot">
-      <q-select filled round bottom-slots v-model="UserMsg" :options="options" label="Label" :dense="dense" :options-dense="denseOpts">
+      <q-select filled round bottom-slots v-model="UserMsg" name="UserMsg" :options="options" label="Label" :dense="dense" :options-dense="denseOpts">
         <template v-slot:append>
           <q-icon v-if="model !== ''" name="close" @click.stop.prevent="model = ''" class="cursor-pointer" />
         </template>
@@ -38,6 +38,10 @@
 <script>
   import { ref } from 'vue'
   import botAnswerJson from '../botAnswer.json';
+  import api from '../../api';
+  import { Notify } from 'quasar'
+  import axios from 'axios'
+  import { data } from 'autoprefixer';
   console.log(botAnswerJson[0].registration.benefit);
 export default {
   data() {
@@ -48,6 +52,7 @@ export default {
       ],
       message: [],
       UserMsg: '',
+      dataSet: 'fff',
       dense: ref(false),
       denseOpts: ref(false),
       counterForUserMsg: 0,
@@ -55,8 +60,20 @@ export default {
       isTextVisible: false,
     }
   },
+  mounted (){
+    this.fetchData();
+    console.clear()
+  },  
   methods: {
-    sendMsg: function () {
+    async fetchData() {
+            try {
+              const response = await api.getUserMsg();
+              this.dataSet = response.data;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        },
+    async sendMsg () {
       for (let index = 0; index < 1; index++) {
         this.counterForUserMsg++;
       }
@@ -71,41 +88,64 @@ export default {
       this.isText = false
       this.isTextVisible = true
       this.botAnswer()
+
+      const data = {
+        UserMsg: this.UserMsg
+      }
+
+      try {
+        const response = await api.bot(data);
+        if (response.status === 200) {
+          Notify.create('Сообщение дошло успешно')
+        } else if (response.status === 400) {
+          Notify.create('Сообщение есть')
+        }
+      } catch (error){
+        Notify.create('Ошибка')
+      }
     },
 
-    botAnswer: function (){
-      let userCheck = sessionStorage.getItem('user')
-      for (let index = 0; index < 1; index++) {
-          this.counterForUserMsg++;
-        }
-      if (this.UserMsg === botAnswerJson[0].introduction.start){
-        userCheck != null ? this.message.push({
-          id: this.counterForUserMsg,
-          text: botAnswerJson[0].introduction.startCorrectAnswer,
-          sent: false,
-          name: "Chat Bot",
-          avatar: 'https://imgv3.fotor.com/images/blog-cover-image/10-profile-picture-ideas-to-make-you-stand-out.jpg'
-        }) : 
-        this.message.push({
-          id: this.counterForUserMsg,
-          text: botAnswerJson[0].introduction.startLoginAnswer,
-          sent: false,
-          name: "Chat Bot",
-          avatar: 'https://imgv3.fotor.com/images/blog-cover-image/10-profile-picture-ideas-to-make-you-stand-out.jpg'
-        })
-      }
-
-      if (this.UserMsg === botAnswerJson[0].registration.benefit){
-        this.message.push({
-          id: this.counterForUserMsg,
-          text: botAnswerJson[0].registration.benefitAnwer,
-          sent: false,
-          name: "Chat Bot",
-          avatar: 'https://imgv3.fotor.com/images/blog-cover-image/10-profile-picture-ideas-to-make-you-stand-out.jpg'
-        })
-      }
+    botAnswer: function() {
+  function generateBotAnswer(id, msg, text, avatar) {
+    if (Array.isArray(msg)) {
+      msg.push({
+        id: id,
+        text: text,
+        sent: false,
+        name: "Chat Bot",
+        avatar: avatar
+      });
+    } else {
+      console.error("msg is not an array", msg);
     }
   }
+
+  let userCheck = sessionStorage.getItem('user');
+  for (let index = 0; index < 1; index++) {
+    this.counterForUserMsg++;
+  }
+
+  if (this.UserMsg === botAnswerJson[0].introduction.start) {
+    userCheck != null ? 
+    generateBotAnswer(
+      this.counterForUserMsg, this.message, botAnswerJson[0].introduction.startCorrectAnswer,
+      'https://imgv3.fotor.com/images/blog-cover-image/10-profile-picture-ideas-to-make-you-stand-out.jpg'
+    ) : 
+    generateBotAnswer(
+      this.counterForUserMsg, this.message, botAnswerJson[0].introduction.startLoginAnswer,
+      'https://imgv3.fotor.com/images/blog-cover-image/10-profile-picture-ideas-to-make-you-stand-out.jpg'
+    );
+  }
+
+  if (this.UserMsg === botAnswerJson[0].registration.benefit) {
+    generateBotAnswer(
+      this.counterForUserMsg, this.message, botAnswerJson[0].registration.benefitAnwer,
+      'https://imgv3.fotor.com/images/blog-cover-image/10-profile-picture-ideas-to-make-you-stand-out.jpg'
+    );
+  }
+}
+
+  },
 }
 </script>
 

@@ -20,5 +20,13 @@ export default {
 
     loginUser(loginData) {
         return apiClient.post('/login', loginData);
+    },
+
+    bot(UserMsg){
+        return apiClient.post('/bot', UserMsg);
+    },
+
+    getUserMsg(){
+        return apiClient.get('/botMsg');
     }
 };

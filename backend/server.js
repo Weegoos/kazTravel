@@ -23,12 +23,15 @@ const pool = mysql.createPool({
 });
 
 
+const bcrypt = require('bcrypt');
+const saltRounds = 10; 
+
 app.post('/registration', (req, res) => {
     const { user_name, password } = req.body;
-    
+
     // Проверяем, что длина имени пользователя и пароля удовлетворяет условиям
     if (user_name.length > 3 && password.length > 8) {
-       
+        
         const checkUserQuery = `SELECT * FROM user WHERE user_name = ?`;
         pool.query(checkUserQuery, [user_name], (err, results) => {
             if (err) {
@@ -41,14 +44,23 @@ app.post('/registration', (req, res) => {
                 return;
             }
 
-            const insertUserQuery = `INSERT INTO user (id, user_name, password) VALUES (null, ?, ?)`;
-            pool.query(insertUserQuery, [user_name, password], (err, result) => {
+            // Хэшируем пароль
+            bcrypt.hash(password, saltRounds, (err, hash) => {
                 if (err) {
-                    console.error('Ошибка при выполнении SQL-запроса:', err);
+                    console.error('Ошибка при хэшировании пароля:', err);
                     res.status(500).send('Ошибка сервера');
                     return;
                 }
-                res.status(200).send('Пользователь успешно зарегистрирован');
+
+                const insertUserQuery = `INSERT INTO user (id, user_name, password) VALUES (null, ?, ?)`;
+                pool.query(insertUserQuery, [user_name, hash], (err, result) => {
+                    if (err) {
+                        console.error('Ошибка при выполнении SQL-запроса:', err);
+                        res.status(500).send('Ошибка сервера');
+                        return;
+                    }
+                    res.status(200).send('Пользователь успешно зарегистрирован');
+                });
             });
         });
     } else {
@@ -56,21 +68,67 @@ app.post('/registration', (req, res) => {
     }
 });
 
+
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
 
-    const loginUserQuery = `SELECT * FROM user WHERE user_name = ? AND password = ?`;
-    pool.query(loginUserQuery, [username, password], (err, results) => {
+    const getUserQuery = `SELECT * FROM user WHERE user_name = ?`;
+    pool.query(getUserQuery, [username], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении SQL-запроса:', err);
             res.status(500).send('Ошибка сервера');
             return;
         }
-        if (results.length > 0) {
-            res.status(200).send('Вход выполнен успешно');
-        } else {
-            res.status(401).send('Неверные учетные данные');
+
+        if (results.length === 0) {
+            res.status(401).send('Пользователь с таким именем не найден');
+            return;
         }
+
+        const user = results[0];
+        const hashedPassword = user.password;
+
+        bcrypt.compare(password, hashedPassword, (err, result) => {
+            if (err) {
+                console.error('Ошибка при сравнении паролей:', err);
+                res.status(500).send('Ошибка сервера');
+                return;
+            }
+
+            if (result) {
+                res.status(200).send('Вход выполнен успешно');
+            } else {
+                res.status(401).send('Неверные учетные данные');
+            }
+        });
+    });
+});
+
+
+app.post('/bot', (req, res) => {
+    const UserMsg = req.body.UserMsg
+
+    const saveUserMsg = `INSERT INTO botmsg (id, text) VALUES (null, ?)`
+    pool.query(saveUserMsg, [UserMsg], (err, result) => {
+        if (err) {
+            console.error('Ошибка при выполнении SQL-запроса:', err);
+            res.status(500).send('Ошибка сервера');
+            return;
+        }
+        res.status(200).send('Пользователь успешно зарегистрирован');
+    })
+})
+
+app.get('/botMsg', (req, res) => {
+    const sql = "SELECT * FROM botmsg";
+
+    pool.query(sql, (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении SQL-запроса:', err);
+            res.status(500).send('Ошибка сервера');
+            return;
+        }
+        res.json(results);
     });
 });
 
@@ -86,6 +144,8 @@ app.get('/test', (req, res) => {
         res.json(results);
     });
 });
+
+
 
 app.use(emailRouter);
 
