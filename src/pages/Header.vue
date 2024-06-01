@@ -64,7 +64,7 @@ import gsap from 'gsap';
 export default {
   data() {
     return {
-      drawer: false,
+      drawer: true,
       loginCheck: false,
       currentCity: null
     };
