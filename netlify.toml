@@ -1,6 +1,6 @@
 [build]
   publish = "dist"
-  command = "npm run build"  # команда для сборки проекта
+  command = "quasar build"  # команда для сборки проекта
 
 [[redirects]]
   from = "/*"
