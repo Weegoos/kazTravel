@@ -19,7 +19,7 @@
           <q-menu>
           <q-list style="min-width: 100px">
             <q-item clickable v-close-popup>
-              <q-btn icon="home" flat to="/">Домойs</q-btn>
+              <q-btn icon="home" flat to="/">Домой</q-btn>
             </q-item>
             <q-item clickable v-close-popup>
               <q-btn icon="style" flat to="/registration">Регистрация</q-btn>
