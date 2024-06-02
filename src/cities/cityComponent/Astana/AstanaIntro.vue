@@ -4,7 +4,7 @@
         <img class="fit" src="../../../assets/astanaIntro.avif" alt="">
         <p class="q-pt-lg headerIntro" :class="[$q.screen.width < 600 ? 'headerMobileVersion' : 'headerDesktopVersion q-pt-xl']">Астана столица Казахстана!</p>
         <p :class="[$q.screen.width < 600 ? 'descriptionMobileVersion' : 'descriptionDesktopVersion']">Исследуйте мир</p>
-        <center><q-btn  rounded dense class="btn q-pa-sm q-ma-sm shadow-2" :class="[$q.screen.width < 600 ? 'btnIntroMobile' : 'btnIntroDesktop']" :to="isCity ? '/air/city' : ''" @click="clickBtn">Рейс в {{ city }}</q-btn></center>
+        <center><q-btn  rounded dense class="btn q-pa-sm q-ma-sm shadow-2" :class="[$q.screen.width < 600 ? 'btnIntroMobile' : 'btnIntroDesktop']" :to="isCity ? '/processing' : ''" @click="clickBtn">Рейс в {{ city }}</q-btn></center>
     </div>
   </div>
 </template>

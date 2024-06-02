@@ -4,7 +4,7 @@
           <img class="fit" src="https://images.unsplash.com/photo-1559678158-3b134ea0a873?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
           <p class="q-pt-lg headerIntro" :class="[$q.screen.width < 600 ? 'headerMobileVersion' : 'headerDesktopVersion q-pt-xl']">Алмата южная столица Казахстана!</p>
           <p :class="[$q.screen.width < 600 ? 'descriptionMobileVersion' : 'descriptionDesktopVersion']">Узнайте больше о городе!</p>
-          <center><q-btn  rounded dense class="btn q-pa-sm q-ma-sm shadow-2" :class="[$q.screen.width < 600 ? 'btnIntroMobile' : 'btnIntroDesktop']" :to="isCity ? '/air/city' : ''" @click="clickBtn">Рейс в {{ city }}</q-btn></center>
+          <center><q-btn  rounded dense class="btn q-pa-sm q-ma-sm shadow-2" :class="[$q.screen.width < 600 ? 'btnIntroMobile' : 'btnIntroDesktop']" :to="isCity ? '/processing' : ''" @click="clickBtn">Рейс в {{ city }}</q-btn></center>
       </div>
     </div>
   </template>

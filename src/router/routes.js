@@ -4,6 +4,10 @@ const routes = [
     component: () => import('src/pages/HomePage.vue'),
   },
   {
+    path: '/processing',
+    component: () => import('src/pages/Processing.vue'),
+  },
+  {
     path: '/registration',
     component: () => import('src/pages/Registration.vue'),
   },

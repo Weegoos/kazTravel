@@ -4,7 +4,7 @@
           <img class="fit" src="https://minzifatravel.com/wp-content/uploads/2022/08/Travelling-through-Shymkent.jpg" alt="">
           <p class="q-pt-lg headerIntro" :class="[$q.screen.width < 600 ? 'headerMobileVersion' : 'headerDesktopVersion q-pt-xl']">Шымкент - культурная столица СНГ</p>
           <p :class="[$q.screen.width < 600 ? 'descriptionMobileVersion' : 'descriptionDesktopVersion']">Путешествуйте вместе с нами</p>
-          <center><q-btn  rounded dense class="btn q-pa-sm q-ma-sm shadow-2" :class="[$q.screen.width < 600 ? 'btnIntroMobile' : 'btnIntroDesktop']" :to="isCity ? '/air/city' : ''" @click="clickBtn">Рейс в {{ city }}</q-btn></center>
+          <center><q-btn  rounded dense class="btn q-pa-sm q-ma-sm shadow-2" :class="[$q.screen.width < 600 ? 'btnIntroMobile' : 'btnIntroDesktop']" :to="isCity ? '/processing' : ''" @click="clickBtn">Рейс в {{ city }}</q-btn></center>
       </div>
     </div>
   </template>
