@@ -1,6 +1,6 @@
 [build]
-  publish = "dist"
-  command = "quasar build"  # команда для сборки проекта
+  publish = "dist/spa"
+  command = "quasar build"
 
 [[redirects]]
   from = "/*"
