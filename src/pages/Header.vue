@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       drawer: true,
-      loginCheck: false,
+      loginCheck: true,
       currentCity: null
     };
   },
