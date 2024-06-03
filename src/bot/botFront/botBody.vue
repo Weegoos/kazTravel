@@ -96,12 +96,12 @@ export default {
       try {
         const response = await api.bot(data);
         if (response.status === 200) {
-          Notify.create('Сообщение дошло успешно')
+          // Notify.create('Сообщение дошло успешно')
         } else if (response.status === 400) {
-          Notify.create('Сообщение есть')
+          // Notify.create('Сообщение есть')
         }
       } catch (error){
-        Notify.create('Ошибка')
+        // Notify.create('Ошибка')
       }
     },
 
