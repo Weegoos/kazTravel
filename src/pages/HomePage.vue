@@ -28,12 +28,15 @@ import secondParallax from '../components/Parallaxnature.vue';
 import historyParallax from '../components/ParallaxHistory.vue';
 import registrantionParallax from '../components/ParallaxRegistration.vue';
 import InfoParallax from '../components/ParallaxInfo.vue';
+import { Notify } from 'quasar';
 export default {
   components: {
     firstParallax, secondParallax, historyParallax, registrantionParallax,
     InfoParallax
   },
   mounted() {
+    localStorage.setItem('set', 'Batyr')
+    Notify.create(localStorage.getItem('set'))
     gsap.registerPlugin(ScrollTrigger);
 
   let getRatio = el => window.innerHeight / (window.innerHeight + el.offsetHeight);
@@ -41,7 +44,6 @@ export default {
 gsap.utils.toArray("section").forEach((section, i) => {
   section.bg = section.querySelector(".bg"); 
 
-  // section.bg.style.backgroundImage = `url(https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bmF0dXJlfGVufDB8fDB8fHww)`;
   
   gsap.fromTo(section.bg, {
     backgroundPosition: () => i ? `50% ${-window.innerHeight * getRatio(section)}px` : "50% 0px"
