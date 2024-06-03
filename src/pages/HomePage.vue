@@ -35,8 +35,6 @@ export default {
     InfoParallax
   },
   mounted() {
-    localStorage.setItem('set', 'Batyr')
-    Notify.create(localStorage.getItem('set'))
     gsap.registerPlugin(ScrollTrigger);
 
   let getRatio = el => window.innerHeight / (window.innerHeight + el.offsetHeight);
